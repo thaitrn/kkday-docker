@@ -6,7 +6,8 @@
     }
   },
   "AllowedHosts": "*",
-  "AesCryptoKey": "7638792F423F4528482B4D6251655468",
+  "GoogleMapsApiKey": "",
+  "AesCryptoKey": "",
   "Currency": "TWD",
   "Marketing": "TW",
   "KKdayApi": {

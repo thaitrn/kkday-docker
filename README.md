@@ -21,3 +21,4 @@ How to build
 3. Copy "appsettings.json.template" to "appsettings.json".
 4. Setup some properties (eg. 'AuthorToken') in "appsettings.json".
 5. Open project and Run
+# kkday-docker

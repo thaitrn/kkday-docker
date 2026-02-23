@@ -566,7 +566,7 @@
                                                     <div class="pd-info-img">
                                                         <div class="embed-responsive embed-responsive-16by9">
                                                             <iframe
-                                                                :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyD_ncUVLw0kJwbHqd4OTiualgb9dcHsJkw&amp;q=${el.latlng.latitude},${el.latlng.longitude}&amp;zoom=17&amp;language=zh-tw`"
+                                                                :src="`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&amp;q=${el.latlng.latitude},${el.latlng.longitude}&amp;zoom=17&amp;language=zh-tw`"
                                                                 frameborder="0" allowfullscreen="allowfullscreen"
                                                                 style="border: 0px;"></iframe>
                                                         </div>
@@ -603,7 +603,7 @@
                                                 <div class="pd-info-img">
                                                     <div class="embed-responsive embed-responsive-16by9">
                                                         <iframe
-                                                            :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyD_ncUVLw0kJwbHqd4OTiualgb9dcHsJkw&amp;q=${el.latlng.latitude},${el.latlng.longitude}&amp;zoom=13&amp;language=zh-tw`"
+                                                            :src="`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&amp;q=${el.latlng.latitude},${el.latlng.longitude}&amp;zoom=13&amp;language=zh-tw`"
                                                             frameborder="0" allowfullscreen="allowfullscreen"
                                                             style="border: 0px;"></iframe>
                                                     </div>
@@ -871,7 +871,7 @@
                                             <div class="pd-info-img">
                                                 <div class="embed-responsive embed-responsive-16by9">
                                                     <iframe
-                                                        :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyD_ncUVLw0kJwbHqd4OTiualgb9dcHsJkw&amp;q=${ item.latlng.latitude},${item.latlng.longitude}&amp;zoom=17&amp;language=zh-tw`"
+                                                        :src="`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&amp;q=${ item.latlng.latitude},${item.latlng.longitude}&amp;zoom=17&amp;language=zh-tw`"
                                                         frameborder="0" allowfullscreen="allowfullscreen"
                                                         style="border: 0px;"></iframe>
                                                 </div>
@@ -911,7 +911,7 @@
                                             <div class="pd-info-img">
                                                 <div class="embed-responsive embed-responsive-16by9">
                                                     <iframe
-                                                        :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyD_ncUVLw0kJwbHqd4OTiualgb9dcHsJkw&amp;q=${item.latlng.latitude},${item.latlng.longitude}&amp;zoom=13&amp;language=zh-tw`"
+                                                        :src="`https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&amp;q=${item.latlng.latitude},${item.latlng.longitude}&amp;zoom=13&amp;language=zh-tw`"
                                                         frameborder="0" allowfullscreen="allowfullscreen"
                                                         style="border: 0px;"></iframe>
                                                 </div>
@@ -1012,6 +1012,7 @@
                 country_cities: [],
                 active_modal_pkg: '',
                 active_img: '',
+                googleMapsApiKey: '@Website.Instance.GoogleMapsApiKey',
             }
         },
         created: function () {

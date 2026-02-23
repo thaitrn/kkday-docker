@@ -65,12 +65,16 @@ builder.Services.AddSingleton<OrderProxy>();
 builder.Services.AddSingleton<CommonProxy>();
 builder.Services.AddSingleton<VoucherProxy>();
 
+// Add health checks
+builder.Services.AddHealthChecks()
+    .AddCheck<KKdayApiHealthCheck>("kkday-api");
+
 #endregion Dependent Injection --- end
 
 
 var app = builder.Build();
 
-Website.Instance.Init(config: builder.Configuration);
+Website.Instance.Init(config: builder.Configuration, isDevelopment: app.Environment.IsDevelopment());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -93,6 +97,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Health check endpoints
+app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = _ => false  // No checks, just liveness
+});
+
+app.MapHealthChecks("/health/ready");
 
 app.MapControllerRoute(
     name: "default",

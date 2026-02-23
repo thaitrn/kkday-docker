@@ -24,8 +24,11 @@ namespace KKday.B2D.Web.InternAgent.Proxy
                  
                 using (var handler = new HttpClientHandler())
                 {
-                    // Ignore Certificate Error!!
-                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    // Only disable SSL validation in Development when explicitly configured
+                    if (Website.Instance.ShouldDisableSSLValidation())
+                    {
+                        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    }
 
                     using (var client = new HttpClient(handler))
                     { 
@@ -81,8 +84,11 @@ namespace KKday.B2D.Web.InternAgent.Proxy
 
                 using (var handler = new HttpClientHandler())
                 {
-                    // Ignore Certificate Error!!
-                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    // Only disable SSL validation in Development when explicitly configured
+                    if (Website.Instance.ShouldDisableSSLValidation())
+                    {
+                        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    }
 
                     using (var client = new HttpClient(handler))
                     {
@@ -132,8 +138,11 @@ namespace KKday.B2D.Web.InternAgent.Proxy
 
                 using (var handler = new HttpClientHandler())
                 {
-                    // Ignore Certificate Error!!
-                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    // Only disable SSL validation in Development when explicitly configured
+                    if (Website.Instance.ShouldDisableSSLValidation())
+                    {
+                        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    }
 
                     using (var client = new HttpClient(handler))
                     {

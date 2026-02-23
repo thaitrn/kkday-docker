@@ -1,0 +1,59 @@
+# Build artifacts
+bin/
+obj/
+.vs/
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# Documentation
+*.md
+!README.md
+docs/
+plans/
+
+# Node modules (if any)
+node_modules/
+
+# Test artifacts
+TestResults/
+*.coverage
+*.coveragexml
+
+# Logs
+logs/
+*.log
+
+# Environment files (use .env.example)
+.env
+.env.*
+!.env.example
+
+# App settings (use template)
+appsettings.json
+appsettings.*.json
+!appsettings.json.template
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db

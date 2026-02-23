@@ -1,0 +1,30 @@
+services:
+  webapp:
+    image: kkday-b2d-internagent:latest
+    container_name: kkday-b2d
+    ports:
+      - "5000:80"
+      - "5001:443"
+    env_file:
+      - .env.production
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Resource limits (optional, recommended)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 175M

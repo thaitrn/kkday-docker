@@ -1,0 +1,34 @@
+# Development Dockerfile with hot reload support
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+
+# Copy project file and restore dependencies
+COPY ["KKday.B2D.Web.InternAgent/KKday.B2D.Web.InternAgent.csproj", "KKday.B2D.Web.InternAgent/"]
+RUN dotnet restore "KKday.B2D.Web.InternAgent/KKday.B2D.Web.InternAgent.csproj"
+
+# Copy all source code
+COPY . .
+
+# Set working directory
+WORKDIR "/src/KKday.B2D.Web.InternAgent"
+
+# Install locales for zh-TW and en-US, plus curl for health checks
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends locales curl && \
+    sed -i '/zh_TW.UTF-8/s/^# //g' /etc/locale.gen && \
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+
+# Expose ports
+EXPOSE 80
+EXPOSE 443
+
+# Entry point (watch mode for hot reload)
+ENTRYPOINT ["dotnet", "watch", "run", "--no-hot-reload"]
