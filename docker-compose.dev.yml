@@ -5,13 +5,17 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_URLS=http://+:5149
+      - ASPNETCORE_HTTP_PORTS=5149
     volumes:
       # Mount source code for hot reload
       - ./KKday.B2D.Web.InternAgent:/app/KKday.B2D.Web.InternAgent:cached
       # Exclude bin/obj to avoid conflicts
       - /app/KKday.B2D.Web.InternAgent/bin
       - /app/KKday.B2D.Web.InternAgent/obj
+    # Expose ports for external access (app runs on 5149 internally per launchSettings.json)
+    ports:
+      - "5149:5149"
     # Override for development - no restart
     restart: "no"
     stdin_open: true
