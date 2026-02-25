@@ -63,7 +63,8 @@ namespace KKday.B2D.Web.InternAgent.Controllers
             catch (Exception ex)
             {
                 jsonData.Clear();
-                Console.WriteLine($"Search Result => {result}");
+                Console.WriteLine($"Search Error => {ex.Message}");
+                jsonData.Add("error", ex.Message);
             }
 
             return Json(jsonData);

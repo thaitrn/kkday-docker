@@ -61,9 +61,10 @@ namespace KKday.B2D.Web.InternAgent.Proxy
                                 {
                                     Thread.Sleep(1000); continue;
                                 }
-                                else 
+                                else
                                 {
-                                    throw new Exception($"{response.StatusCode} => {JsonConvert.SerializeObject(jsonResult)} ");
+                                    var errorContent = response.Content.ReadAsStringAsync().Result;
+                                    throw new Exception($"{response.StatusCode} => {errorContent} ");
                                 }
                             }
                         }
