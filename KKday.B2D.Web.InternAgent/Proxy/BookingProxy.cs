@@ -55,6 +55,7 @@ namespace KKday.B2D.Web.InternAgent.Proxy
 
                             var response = client.SendAsync(request).Result;
                             jsonResult = response.Content.ReadAsStringAsync().Result;
+                            Console.WriteLine($"Booking Response => Status: {response.StatusCode}, Body: {jsonResult}");
 
                             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                             {

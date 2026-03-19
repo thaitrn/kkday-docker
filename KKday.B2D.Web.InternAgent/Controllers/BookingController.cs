@@ -216,16 +216,84 @@ namespace KKday.B2D.Web.InternAgent.Controllers
 
                 if (booking != null)
                 {
+                    Console.WriteLine($"=== Booking Debug ===");
+                    Console.WriteLine($"prod_no: {booking.prod_no}, pkg_no: {booking.pkg_no}, item_no: {booking.item_no}");
+                    Console.WriteLine($"s_date: {booking.s_date}, e_date: {booking.e_date}");
+                    Console.WriteLine($"total_price: {booking.total_price}, SKU prices: {string.Join(", ", booking.skus.Select(s => $"{s.sku_id}={s.price}"))}");
+                    Console.WriteLine($"Custom fields: {JsonSerializer.Serialize(booking.custom)}");
+                    Console.WriteLine($"====================");
+
+                    // Fix missing required fields to avoid CH001 error
+                    if (booking.custom != null)
+                    {
+                        Console.WriteLine($"=== Before Fix ===");
+                        Console.WriteLine($"Custom count: {booking.custom.Count}");
+
+                        foreach (var custom in booking.custom)
+                        {
+                            if (custom.cus_type == "contact")
+                            {
+                                // Populate phone if empty
+                                if (string.IsNullOrEmpty(custom.tel_number))
+                                {
+                                    custom.tel_country_code = booking.buyer_tel_country_code;
+                                    custom.tel_number = booking.buyer_tel_number;
+                                }
+                                // Fix empty app fields
+                                if (string.IsNullOrEmpty(custom.contact_app) || string.IsNullOrEmpty(custom.contact_app_account))
+                                {
+                                    custom.contact_app = null;
+                                    custom.contact_app_account = null;
+                                    custom.have_app = "false";
+                                }
+                            }
+                            // Fix traveler fields - add missing required data
+                            else if (custom.cus_type == "cus_01" || custom.cus_type == "cus_02")
+                            {
+                                // Set default gender if missing (REQUIRED)
+                                if (string.IsNullOrEmpty(custom.gender))
+                                {
+                                    custom.gender = "M";
+                                }
+                                // Set native names if missing (from English names)
+                                if (string.IsNullOrEmpty(custom.native_first_name) && !string.IsNullOrEmpty(custom.english_first_name))
+                                {
+                                    custom.native_first_name = custom.english_first_name;
+                                }
+                                if (string.IsNullOrEmpty(custom.native_last_name) && !string.IsNullOrEmpty(custom.english_last_name))
+                                {
+                                    custom.native_last_name = custom.english_last_name;
+                                }
+                                // Set passport expiry if missing (REQUIRED for international travel)
+                                if (string.IsNullOrEmpty(custom.passport_expdate) && !string.IsNullOrEmpty(custom.passport_no))
+                                {
+                                    // Set expiry to 10 years from now
+                                    custom.passport_expdate = DateTime.Now.AddYears(10).ToString("yyyy-MM-dd");
+                                }
+                                // Set glass_degree if missing (defaults to 0)
+                                if (!custom.glass_degree.HasValue || custom.glass_degree == 0)
+                                {
+                                    custom.glass_degree = 0;
+                                }
+                            }
+                        }
+                        Console.WriteLine($"=== After Fix ===");
+                        Console.WriteLine($"Custom fields: {JsonSerializer.Serialize(booking.custom)}");
+                    }
                     //call booking
                     var bookProxy = HttpContext.RequestServices.GetService<BookingProxy>();
                     var result = bookProxy.Booking(booking);
+                    Console.WriteLine($"Booking Result => result: {result.result}, result_msg: {result.result_msg}, order_no: {result.order_no}");
+
                     if (!string.IsNullOrEmpty(result.order_no))
                     {
                         rs.Add("order_no", result.order_no);
                     }
                     else
                     {
-                        throw new Exception(result.result_msg);
+                        var errorMsg = $"API Error: {result.result} - {result.result_msg}";
+                        Console.WriteLine($"Booking Failed => {errorMsg}");
+                        throw new Exception(errorMsg);
                     }
                 }
 
